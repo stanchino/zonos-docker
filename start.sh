@@ -9,5 +9,7 @@ fi
 # Start SSH server
 service ssh start
 
-# Start Gradio interface
-cd /workspace && uv run gradio_interface.py
+# Start Gradio interface with output redirection
+cd /workspace
+echo "Starting Gradio interface..."
+exec uv run gradio_interface.py 2>&1 | tee /dev/stdout

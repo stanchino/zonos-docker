@@ -1,6 +1,8 @@
 # zonos-docker
 
 [![Docker Build](https://github.com/stanchino/zonos-docker/actions/workflows/docker-build.yml/badge.svg)](https://github.com/stanchino/zonos-docker/actions/workflows/docker-build.yml)
+[![Docker Pulls](https://img.shields.io/docker/pulls/stanchino/zonos.svg)](https://hub.docker.com/r/stanchino/zonos)
+[![Docker Stars](https://img.shields.io/docker/stars/stanchino/zonos.svg)](https://hub.docker.com/r/stanchino/zonos)
 
 A Docker container for deploying the [Zonos-v0.1](https://github.com/Zyphra/Zonos) open-weight text-to-speech model. This container provides a ready-to-use environment with CUDA support, Python dependencies managed by `uv`, and a secure SSH server for remote access.
 
@@ -59,6 +61,15 @@ docker run -it --gpus=all \
   zonos
 ```
 
+## Docker Hub
+
+This image is available on Docker Hub at [stanchino/zonos](https://hub.docker.com/r/stanchino/zonos). The repository is linked to this GitHub repository for automated builds.
+
+Build tags:
+- `latest`: Latest build from the main branch
+- `YYYYMMDD`: Weekly builds tagged with date
+- `YYYYMMDD-[sha]`: Builds triggered by commits
+
 ## SSH Access
 
 The container runs an SSH server for remote access. Authentication is handled via public key only (password authentication is disabled for security).
@@ -77,6 +88,55 @@ ssh -i ~/.ssh/id_rsa root@localhost
 - Only public key authentication is allowed (password authentication is disabled)
 - The SSH server is configured with secure defaults
 - Root login is restricted to public key authentication only
+
+## RunPod Deployment
+
+This Docker image is compatible with RunPod and can be easily deployed on their GPU cloud platform.
+
+### Setting up on RunPod
+
+1. Log in to [RunPod](https://www.runpod.io/)
+
+2. Create a new pod with the following settings:
+   - Container Image: `stanchino/zonos:latest`
+   - Select a GPU type based on your needs (minimum 6GB VRAM)
+   - Container Disk: At least 20GB recommended
+   - Expose HTTP Ports: `7860` (for Gradio interface)
+   - Volume Size: 10GB+ recommended
+
+3. Add your SSH public key:
+   - In the "Environment Variables" section, add:
+     ```
+     PUBLIC_KEY=your-ssh-public-key-here
+     ```
+   - Replace `your-ssh-public-key-here` with the contents of your `~/.ssh/id_rsa.pub`
+
+4. Start the pod
+
+### Accessing Your RunPod Deployment
+
+1. **Gradio Interface**
+   - Access via the "Connect" button in RunPod UI
+   - Or use the direct URL: `https://[pod-id]-7860.proxy.runpod.net`
+
+2. **SSH Access**
+   - Get your pod's IP and SSH port from RunPod dashboard
+   - Connect using:
+     ```bash
+     ssh -i ~/.ssh/id_rsa root@[pod-ip] -p [ssh-port]
+     ```
+
+### Monitoring
+
+- View container logs directly in RunPod dashboard
+- All Gradio interface output is redirected to container logs
+- SSH server status and connection attempts are also logged
+
+### Cost Optimization
+
+- Use Spot instances for non-critical workloads
+- Stop the pod when not in use
+- Consider using RunPod's serverless API for production deployments
 
 ## Continuous Integration
 
