@@ -6,6 +6,25 @@
 
 A Docker container for deploying the [Zonos-v0.1](https://github.com/Zyphra/Zonos) open-weight text-to-speech model. This container provides a ready-to-use environment with CUDA support, Python dependencies managed by `uv`, and a secure SSH server for remote access.
 
+## Contents
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [RunPod Deployment](#runpod-deployment)
+  - [Setting up on RunPod](#setting-up-on-runpod)
+  - [Accessing Your RunPod Deployment](#accessing-your-runpod-deployment)
+  - [Monitoring](#monitoring)
+  - [Cost Optimization](#cost-optimization)
+- [Building from Source](#building-from-source)
+- [Docker Hub](#docker-hub)
+- [SSH Access](#ssh-access)
+- [Environment Variables](#environment-variables)
+- [Security Notes](#security-notes)
+- [Continuous Integration](#continuous-integration)
+- [License](#license)
+- [Contributing](#contributing)
+
 ## Features
 
 - CUDA-enabled environment for GPU acceleration
@@ -39,55 +58,6 @@ docker run -it --gpus=all \
 This will:
 1. Start the Gradio interface accessible at `http://localhost:7860`
 2. Enable SSH access on port 22 using your public key
-
-## Building from Source
-
-1. Clone this repository:
-```bash
-git clone https://github.com/stanchino/zonos-docker.git
-cd zonos-docker
-```
-
-2. Build the Docker image:
-```bash
-docker build -t zonos .
-```
-
-3. Run the container:
-```bash
-docker run -it --gpus=all \
-  -p 22:22 -p 7860:7860 \
-  -e PUBLIC_KEY="$(cat ~/.ssh/id_rsa.pub)" \
-  zonos
-```
-
-## Docker Hub
-
-This image is available on Docker Hub at [stanchino/zonos](https://hub.docker.com/r/stanchino/zonos). The repository is linked to this GitHub repository for automated builds.
-
-Build tags:
-- `latest`: Latest build from the main branch
-- `YYYYMMDD`: Weekly builds tagged with date
-- `YYYYMMDD-[sha]`: Builds triggered by commits
-
-## SSH Access
-
-The container runs an SSH server for remote access. Authentication is handled via public key only (password authentication is disabled for security).
-
-To connect:
-```bash
-ssh -i ~/.ssh/id_rsa root@localhost
-```
-
-## Environment Variables
-
-- `PUBLIC_KEY`: Your SSH public key for authentication (required for SSH access)
-
-## Security Notes
-
-- Only public key authentication is allowed (password authentication is disabled)
-- The SSH server is configured with secure defaults
-- Root login is restricted to public key authentication only
 
 ## RunPod Deployment
 
@@ -137,6 +107,55 @@ This Docker image is compatible with RunPod and can be easily deployed on their 
 - Use Spot instances for non-critical workloads
 - Stop the pod when not in use
 - Consider using RunPod's serverless API for production deployments
+
+## Building from Source
+
+1. Clone this repository:
+```bash
+git clone https://github.com/stanchino/zonos-docker.git
+cd zonos-docker
+```
+
+2. Build the Docker image:
+```bash
+docker build -t zonos .
+```
+
+3. Run the container:
+```bash
+docker run -it --gpus=all \
+  -p 22:22 -p 7860:7860 \
+  -e PUBLIC_KEY="$(cat ~/.ssh/id_rsa.pub)" \
+  zonos
+```
+
+## Docker Hub
+
+This image is available on Docker Hub at [stanchino/zonos](https://hub.docker.com/r/stanchino/zonos). The repository is linked to this GitHub repository for automated builds.
+
+Build tags:
+- `latest`: Latest build from the main branch
+- `YYYYMMDD`: Weekly builds tagged with date
+- `YYYYMMDD-[sha]`: Builds triggered by commits
+
+## SSH Access
+
+The container runs an SSH server for remote access. Authentication is handled via public key only (password authentication is disabled for security).
+
+To connect:
+```bash
+ssh -i ~/.ssh/id_rsa root@localhost
+```
+
+## Environment Variables
+
+- `PUBLIC_KEY`: Your SSH public key for authentication (required for SSH access)
+
+## Security Notes
+
+- Only public key authentication is allowed (password authentication is disabled)
+- The SSH server is configured with secure defaults
+- Root login is restricted to public key authentication only
 
 ## Continuous Integration
 
