@@ -160,7 +160,7 @@ ssh -i ~/.ssh/id_rsa root@localhost
 ## Continuous Integration
 
 The Docker image is automatically built and pushed to Docker Hub:
-- Weekly builds every Sunday at midnight UTC
+- Daily builds everyday at midnight UTC
 - On every push to main that changes Dockerfile or start.sh
 - Images are tagged with:
   - `latest` for the most recent build from main
