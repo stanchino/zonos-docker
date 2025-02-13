@@ -135,7 +135,7 @@ This image is available on Docker Hub at [stanchino/zonos](https://hub.docker.co
 
 Build tags:
 - `latest`: Latest build from the main branch
-- `YYYYMMDD`: Weekly builds tagged with date
+- `YYYYMMDD`: Daily builds tagged with date
 - `YYYYMMDD-[sha]`: Builds triggered by commits
 
 ## SSH Access
@@ -164,7 +164,7 @@ The Docker image is automatically built and pushed to Docker Hub:
 - On every push to main that changes Dockerfile or start.sh
 - Images are tagged with:
   - `latest` for the most recent build from main
-  - Date-based tags (YYYYMMDD) for weekly builds
+  - Date-based tags (YYYYMMDD) for daily builds
   - Commit SHA with date prefix for push-triggered builds
 
 ## License
